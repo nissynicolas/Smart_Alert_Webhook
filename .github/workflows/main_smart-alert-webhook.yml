@@ -40,6 +40,6 @@ jobs:
           app-name: 'Smart-Alert-Webhook'
           slot-name: 'Production'
           package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_1914194E09744C9084D8B450DDFE1CDE }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0969F9A938F44E28B8F095156FDB20CA }}
           sku: 'flexconsumption'
         
