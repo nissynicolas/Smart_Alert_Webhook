@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DatadogWebhookFunction")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c5566a756505ccade9a6b75948002ddf5cbac064")]
 [assembly: System.Reflection.AssemblyProductAttribute("DatadogWebhookFunction")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DatadogWebhookFunction")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

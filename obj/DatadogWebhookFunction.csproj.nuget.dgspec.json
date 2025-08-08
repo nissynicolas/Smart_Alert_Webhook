@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ngunturu\\Smart_Alert_Webhook\\AzureFunctions\\DatadogWebhookFunction.csproj": {}
+    "C:\\Users\\ngunturu\\personalgithub\\Smart_Alert_Webhook\\DatadogWebhookFunction.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ngunturu\\Smart_Alert_Webhook\\AzureFunctions\\DatadogWebhookFunction.csproj": {
+    "C:\\Users\\ngunturu\\personalgithub\\Smart_Alert_Webhook\\DatadogWebhookFunction.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ngunturu\\Smart_Alert_Webhook\\AzureFunctions\\DatadogWebhookFunction.csproj",
+        "projectUniqueName": "C:\\Users\\ngunturu\\personalgithub\\Smart_Alert_Webhook\\DatadogWebhookFunction.csproj",
         "projectName": "DatadogWebhookFunction",
-        "projectPath": "C:\\Users\\ngunturu\\Smart_Alert_Webhook\\AzureFunctions\\DatadogWebhookFunction.csproj",
+        "projectPath": "C:\\Users\\ngunturu\\personalgithub\\Smart_Alert_Webhook\\DatadogWebhookFunction.csproj",
         "packagesPath": "C:\\Users\\ngunturu\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ngunturu\\Smart_Alert_Webhook\\AzureFunctions\\obj\\",
+        "outputPath": "C:\\Users\\ngunturu\\personalgithub\\Smart_Alert_Webhook\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\ngunturu\\Smart_Alert_Webhook\\AzureFunctions\\NuGet.Config",
+          "C:\\Users\\ngunturu\\personalgithub\\Smart_Alert_Webhook\\NuGet.Config",
           "C:\\Users\\ngunturu\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
