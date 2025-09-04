@@ -14,9 +14,11 @@
     <SourceRoot Include="C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages\" />
   </ItemGroup>
   <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Import Project="$(NuGetPackageRoot)xunit.core\2.9.3\build\xunit.core.props" Condition="Exists('$(NuGetPackageRoot)xunit.core\2.9.3\build\xunit.core.props')" />
     <Import Project="$(NuGetPackageRoot)microsoft.azure.functions.worker.sdk\1.16.4\build\Microsoft.Azure.Functions.Worker.Sdk.props" Condition="Exists('$(NuGetPackageRoot)microsoft.azure.functions.worker.sdk\1.16.4\build\Microsoft.Azure.Functions.Worker.Sdk.props')" />
   </ImportGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Pkgxunit_analyzers Condition=" '$(Pkgxunit_analyzers)' == '' ">C:\Users\ngunturu\.nuget\packages\xunit.analyzers\1.18.0</Pkgxunit_analyzers>
     <PkgMicrosoft_Azure_Functions_Worker_Sdk_Analyzers Condition=" '$(PkgMicrosoft_Azure_Functions_Worker_Sdk_Analyzers)' == '' ">C:\Users\ngunturu\.nuget\packages\microsoft.azure.functions.worker.sdk.analyzers\1.2.1</PkgMicrosoft_Azure_Functions_Worker_Sdk_Analyzers>
     <PkgMicrosoft_Azure_Functions_Worker_Sdk Condition=" '$(PkgMicrosoft_Azure_Functions_Worker_Sdk)' == '' ">C:\Users\ngunturu\.nuget\packages\microsoft.azure.functions.worker.sdk\1.16.4</PkgMicrosoft_Azure_Functions_Worker_Sdk>
   </PropertyGroup>
