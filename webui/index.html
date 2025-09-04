@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webhook UI Tester</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f6fa; margin: 0; padding: 0; }
+        .container { max-width: 600px; margin: 40px auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #0001; padding: 32px; }
+        h1 { text-align: center; color: #2d3a4a; }
+        textarea { width: 100%; min-height: 120px; font-family: monospace; font-size: 1em; margin-bottom: 16px; border-radius: 4px; border: 1px solid #ccc; padding: 8px; }
+        button { background: #0078d4; color: #fff; border: none; padding: 12px 24px; border-radius: 4px; font-size: 1em; cursor: pointer; }
+        button:disabled { background: #aaa; }
+        .output { margin-top: 24px; background: #f9fafb; border: 1px solid #e3e7ed; border-radius: 4px; padding: 16px; min-height: 80px; white-space: pre-wrap; font-family: monospace; }
+        label { font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Webhook UI Tester</h1>
+        <form id="webhookForm">
+            <label for="payload">Sample Request Payload (JSON):</label>
+            <textarea id="payload" required>{
+  "alert": "Test alert from UI",
+  "severity": "info",
+  "message": "This is a sample webhook payload."
+}</textarea>
+            <button type="submit">Send to Webhook</button>
+        </form>
+        <div class="output" id="output">Response will appear here...</div>
+    </div>
+    <script>
+        const form = document.getElementById('webhookForm');
+        const output = document.getElementById('output');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            output.textContent = 'Sending...';
+            const payload = document.getElementById('payload').value;
+            try {
+                const response = await fetch('http://localhost:7071/api/datadog/webhook', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: payload
+                });
+                const text = await response.text();
+                output.textContent = text;
+            } catch (err) {
+                output.textContent = 'Error: ' + err;
+            }
+        });
+    </script>
+</body>
+</html>
