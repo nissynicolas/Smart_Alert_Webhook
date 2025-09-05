@@ -1,10 +1,15 @@
-using System.Net;
-using System.Text.Json;
 using DatadogWebhookFunction.Models;
 using DatadogWebhookFunction.Services;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.AI;
 using Microsoft.Extensions.Logging;
+using ModelContextProtocol.Client;
+using OpenAI;
+using System.Net;
+using System.Net.Http.Json;
+using System.Text;
+using System.Text.Json;
 
 namespace DatadogWebhookFunction;
 
@@ -31,12 +36,40 @@ public class DatadogWebhookFunctions
     {
         try
         {
-            _logger.LogInformation("Received Datadog webhook request from {RemoteIp}", 
+            _logger.LogInformation("Received Datadog webhook request from {RemoteIp}",
                 req.Headers.Contains("X-Forwarded-For") ? req.Headers.GetValues("X-Forwarded-For").FirstOrDefault() : "Unknown");
 
-            // Read and deserialize the request body
+            // Read the request body
             var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            
+            using JsonDocument doc = JsonDocument.Parse(requestBody);
+
+            // 🔹 Extract only "alert" field (alert title)
+            var title = doc.RootElement.GetProperty("alert").GetString();
+
+            string prompt = string.IsNullOrWhiteSpace(title)
+                    ? @"You are an assistant that retrieves Confluence documentation.
+                Given an error message, your task is to search and return only the most relevant Confluence pages that contain Root Cause Analysis (RCA), root cause explanations, or resolution steps directly related to the error.
+
+                Focus specifically on:
+                - RCA documents
+                - Postmortems
+                - Resolution or guidance steps
+                - Troubleshooting guides
+
+                Do not include unrelated pages.
+                If no RCA or resolution steps are available, clearly state that no relevant Confluence pages were found."
+                    : $@"You are an assistant that retrieves Confluence documentation.
+                Given the error message: ""{title}"", search and return only the most relevant Confluence pages that contain Root Cause Analysis (RCA), root cause explanations, or resolution steps directly related to this error.
+
+                Focus specifically on:
+                - RCA documents
+                - Postmortems
+                - Resolution or guidance steps
+                - Troubleshooting guides
+
+                Do not include unrelated pages.
+                If no RCA or resolution steps are available, clearly state that no relevant Confluence pages were found.";
+
             if (string.IsNullOrEmpty(requestBody))
             {
                 _logger.LogWarning("Received empty webhook payload");
@@ -45,35 +78,52 @@ public class DatadogWebhookFunctions
                 return badResponse;
             }
 
-            // Parse the webhook payload
-            var payload = JsonSerializer.Deserialize<DatadogWebhookPayload>(requestBody, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
+            IChatClient client =
+                new ChatClientBuilder(
+                    new OpenAIClient(Environment.GetEnvironmentVariable("OPENAI_API_KEY"))
+                    .GetChatClient("gpt-4.1")
+                    .AsIChatClient())
+                .UseFunctionInvocation()
+                .Build();
 
-            if (payload == null)
+            var mcpSseEndpoint = new Uri("https://jira-server-fthpf3hqa5bpeefx.eastus2-01.azurewebsites.net/sse");
+
+            IMcpClient mcpClient = await McpClientFactory.CreateAsync(
+                new SseClientTransport(new SseClientTransportOptions
+                {
+                    Endpoint = mcpSseEndpoint
+                })
+            );
+
+            // List available tools from MCP (optional, if you still want to use them)
+            Console.WriteLine("Available tools:");
+            IList<McpClientTool> tools = await mcpClient.ListToolsAsync();
+            foreach (McpClientTool tool in tools)
             {
-                _logger.LogWarning("Failed to deserialize webhook payload");
-                var badResponse = req.CreateResponse(HttpStatusCode.BadRequest);
-                await badResponse.WriteAsJsonAsync(FunctionResponse<string>.ErrorResponse("Invalid payload format"));
-                return badResponse;
+                Console.WriteLine($"{tool}");
+            }
+            Console.WriteLine();
+
+            // Prepare conversation history
+            List<ChatMessage> messages = new List<ChatMessage>
+            {
+                new(ChatRole.User, prompt)
+            };
+
+            var aiTools = tools.Cast<AITool>().ToList();
+
+            StringBuilder fullResponse = new();
+
+            await foreach (ChatResponseUpdate update in client
+                .GetStreamingResponseAsync(messages, new() { Tools = aiTools }))
+            {
+                Console.Write(update);
+                fullResponse.Append(update);
             }
 
-            _logger.LogInformation("Processing Datadog webhook: AlertId={AlertId}, Type={AlertType}", 
-                payload.AlertId, payload.AlertType);
-
-            // Log the raw payload for debugging (be careful with sensitive data in production)
-            if (_logger.IsEnabled(LogLevel.Debug))
-            {
-                _logger.LogDebug("Webhook payload: {Payload}", requestBody);
-            }
-
-            // Process the webhook
-            var result = await _webhookService.ProcessDatadogWebhookAsync(payload);
-
-            // Return success response
             var response = req.CreateResponse(HttpStatusCode.OK);
-            await response.WriteAsJsonAsync(FunctionResponse<WebhookProcessingResult>.SuccessResponse(result));
+            await response.WriteStringAsync(fullResponse.ToString(), Encoding.UTF8);
+
             return response;
         }
         catch (JsonException ex)
@@ -116,7 +166,7 @@ public class DatadogWebhookFunctions
                 return badResponse;
             }
 
-            _logger.LogInformation("Processing Datadog event: EventType={EventType}, Title={EventTitle}", 
+            _logger.LogInformation("Processing Datadog event: EventType={EventType}, Title={EventTitle}",
                 payload.EventType, payload.EventTitle);
 
             var result = await _webhookService.ProcessDatadogWebhookAsync(payload);
