@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ngunturu\\personalgithub\\Smart_Alert_Webhook\\DatadogWebhookFunction.csproj": {}
+    "C:\\Users\\ngunturu\\source\\repos\\Smart_Alert_Webhook\\DatadogWebhookFunction.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ngunturu\\personalgithub\\Smart_Alert_Webhook\\DatadogWebhookFunction.csproj": {
+    "C:\\Users\\ngunturu\\source\\repos\\Smart_Alert_Webhook\\DatadogWebhookFunction.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ngunturu\\personalgithub\\Smart_Alert_Webhook\\DatadogWebhookFunction.csproj",
+        "projectUniqueName": "C:\\Users\\ngunturu\\source\\repos\\Smart_Alert_Webhook\\DatadogWebhookFunction.csproj",
         "projectName": "DatadogWebhookFunction",
-        "projectPath": "C:\\Users\\ngunturu\\personalgithub\\Smart_Alert_Webhook\\DatadogWebhookFunction.csproj",
+        "projectPath": "C:\\Users\\ngunturu\\source\\repos\\Smart_Alert_Webhook\\DatadogWebhookFunction.csproj",
         "packagesPath": "C:\\Users\\ngunturu\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ngunturu\\personalgithub\\Smart_Alert_Webhook\\obj\\",
+        "outputPath": "C:\\Users\\ngunturu\\source\\repos\\Smart_Alert_Webhook\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\ngunturu\\personalgithub\\Smart_Alert_Webhook\\NuGet.Config",
+          "C:\\Users\\ngunturu\\source\\repos\\Smart_Alert_Webhook\\NuGet.Config",
           "C:\\Users\\ngunturu\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -50,6 +50,14 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Azure.AI.OpenAI": {
+              "target": "Package",
+              "version": "[2.3.0-beta.2, )"
+            },
+            "Azure.Identity": {
+              "target": "Package",
+              "version": "[1.15.0, )"
+            },
             "Microsoft.ApplicationInsights.WorkerService": {
               "target": "Package",
               "version": "[2.21.0, )"
@@ -70,6 +78,22 @@
               "target": "Package",
               "version": "[1.16.4, )"
             },
+            "Microsoft.Extensions.AI": {
+              "target": "Package",
+              "version": "[9.8.0, )"
+            },
+            "Microsoft.Extensions.AI.OpenAI": {
+              "target": "Package",
+              "version": "[9.8.0-preview.1.25412.6, )"
+            },
+            "ModelContextProtocol": {
+              "target": "Package",
+              "version": "[0.3.0-preview.4, )"
+            },
+            "Moq": {
+              "target": "Package",
+              "version": "[4.20.72, )"
+            },
             "Serilog.Extensions.Hosting": {
               "target": "Package",
               "version": "[8.0.0, )"
@@ -77,6 +101,10 @@
             "Serilog.Sinks.Console": {
               "target": "Package",
               "version": "[5.0.1, )"
+            },
+            "xunit": {
+              "target": "Package",
+              "version": "[2.9.3, )"
             }
           },
           "imports": [
@@ -95,7 +123,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.302/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
